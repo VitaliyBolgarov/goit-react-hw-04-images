@@ -1,18 +1,16 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import './Searchbar.css';
 import { toast } from 'react-hot-toast';
 
-export class Searchbar extends Component {
-  state = { query: '' };
+export const Searchbar = ({ onSubmit }) => {
+  const [query, setQuery] = useState('');
 
-  handleChange = e => {
-    this.setState({ query: e.currentTarget.value.toLowerCase().trim() });
+  const handleChange = e => {
+    setQuery(e.target.value.toLowerCase().trim() );
   };
 
-  handleSubmit = event => {
+  const handleSubmit = event => {
     event.preventDefault();
-    const { query } = this.state;
-    const { onSubmit } = this.props;
 
     if (query === '') {
       toast.error('Enter what you want to find please');
@@ -20,19 +18,13 @@ export class Searchbar extends Component {
     }
 
     onSubmit(query);
-    this.setState({ query: '' });
+    setQuery('');
   };
 
-  render() {
     return (
       <header className="Searchbar">
-        <form
-          className="SearchForm"
-          onSubmit={this.handleSubmit}
-          autoComplete="off"
-        >
-          <button type="submit" className="SearchForm-button">
-          </button>
+        <form className="SearchForm" onSubmit={handleSubmit} autoComplete="off">
+          <button type="submit" className="SearchForm-button"></button>
 
           <input
             className="SearchForm-input"
@@ -40,11 +32,11 @@ export class Searchbar extends Component {
             autoComplete="off"
             autoFocus
             placeholder="Search images and photos"
-            onChange={this.handleChange}
-            value={this.state.query}
+            onChange={handleChange}
+            value={query}
           />
         </form>
       </header>
     );
   }
-}
+
